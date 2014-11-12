@@ -43,7 +43,7 @@ for post in posts:
 	attrlist = []
 
 	for attribute in xpaths:
-		attrlist.append(post.xpath(xpaths[attribute])[0].encode('ascii', 'ignore').translate(None, '"'))
+		attrlist.append(post.xpath(xpaths[attribute])[0].encode('ascii', 'ignore').translate(None, '",'))
 
 	fo.write(", ".join(attrlist) + ", " + timestamp + "\n")
 
