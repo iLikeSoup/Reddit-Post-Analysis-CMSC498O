@@ -8,10 +8,11 @@ import datetime
 ts = time.time()
 DOR = datetime.datetime.fromtimestamp(ts).strftime('%m_%d_%Y')
 timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
+filename = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d_%H:%M:%S')
 
 # Pull Reddit "front-page" source code
 #page = open('redditsource.html', 'r').read()
-page = urllib2.urlopen("http://www.reddit.com?limit=25").read()
+page = urllib2.urlopen("http://www.reddit.com?limit=100").read()
 
 # Store the HTML in lxml tree form so we can easily use it
 tree = html.fromstring(page)
@@ -32,7 +33,7 @@ xpaths['link'] = './/p[contains(@class, "title")]/a[contains(@class, "title")]/@
 xpaths['domain'] = './/p[contains(@class, "title")]/span[contains(@class, "domain")]/a/text()'
 
 # Open the CSV file to be written
-with open("redditFP-" + DOR + ".csv", "w+") as fo: # with open() implicitly handles any exceptions raised. also don't need to close file
+with open("/home/terrapin/jackGithub/Reddit-Post-Analysis-CMSC498O/pulls/redditFP-" + filename + ".csv", "w+") as fo: # with open() implicitly handles any exceptions raised. also don't need to close file
 	# Write the CSV column headers
 	fo.write(", ".join(xpaths) + ", timestamp" + "\n")
 
