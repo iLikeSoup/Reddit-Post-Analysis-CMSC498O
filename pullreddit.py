@@ -10,8 +10,8 @@ DOR = datetime.datetime.fromtimestamp(ts).strftime('%m_%d_%Y')
 timestamp = datetime.datetime.fromtimestamp(ts).strftime('%m_%d_%Y %H:%M:%S')
 
 # Pull Reddit "front-page" source code
-page = open('redditsource.html', 'r').read()
-#page = urllib2.urlopen("http://www.reddit.com?limit=25").read()
+#page = open('redditsource.html', 'r').read()
+page = urllib2.urlopen("http://www.reddit.com?limit=25").read()
 
 # Store the HTML in lxml tree form so we can easily use it
 tree = html.fromstring(page)
@@ -22,7 +22,7 @@ posts = tree.xpath('//*/div[@id="siteTable"]/div[contains(@class, "thing")]')
 # Create XPATH strings for extracting information we want from the post DIVs
 xpaths = {}
 xpaths['rank'] = './/span[contains(@class, "rank")]/text()'
-#xpaths['title'] = './/p[contains(@class, "title")]/a[contains(@class, "title")]/text()'
+xpaths['title'] = './/p[contains(@class, "title")]/a[contains(@class, "title")]/text()'
 xpaths['score'] = './/div[contains(@class, "unvoted")]/div[contains(@class, "score") and contains(@class, "unvoted")]/text()'
 xpaths['post_time'] = './/p[contains(@class, "tagline")]/time[contains(@class, "live-timestamp")]/@title'
 xpaths['submitter'] = './/p[contains(@class, "tagline")]/a[contains(@class, "author")]/text()'
@@ -43,7 +43,7 @@ for post in posts:
 	attrlist = []
 
 	for attribute in xpaths:
-		attrlist.append(post.xpath(xpaths[attribute])[0])
+		attrlist.append(post.xpath(xpaths[attribute])[0].encode('ascii', 'ignore'))
 
 	fo.write(", ".join(attrlist) + ", " + timestamp + "\n")
 
