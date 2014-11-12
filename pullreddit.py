@@ -10,8 +10,8 @@ DOR = datetime.datetime.fromtimestamp(ts).strftime('%m_%d_%Y')
 timestamp = datetime.datetime.fromtimestamp(ts).strftime('%m_%d_%Y %H:%M:%S')
 
 # Pull Reddit "front-page" source code
-#page = open('redditsource.html', 'r').read()
-page = urllib2.urlopen("http://www.reddit.com?limit=25").read()
+page = open('redditsource.html', 'r').read()
+#page = urllib2.urlopen("http://www.reddit.com?limit=25").read()
 
 # Store the HTML in lxml tree form so we can easily use it
 tree = html.fromstring(page)
@@ -43,7 +43,7 @@ for post in posts:
 	attrlist = []
 
 	for attribute in xpaths:
-		attrlist.append(post.xpath(xpaths[attribute])[0].encode('ascii', 'ignore'))
+		attrlist.append(post.xpath(xpaths[attribute])[0].encode('ascii', 'ignore').translate(None, '"'))
 
 	fo.write(", ".join(attrlist) + ", " + timestamp + "\n")
 
