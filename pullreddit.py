@@ -32,22 +32,15 @@ xpaths['link'] = './/p[contains(@class, "title")]/a[contains(@class, "title")]/@
 xpaths['domain'] = './/p[contains(@class, "title")]/span[contains(@class, "domain")]/a/text()'
 
 # Open the CSV file to be written
-fo = open("redditFP-" + DOR + ".csv", "w+")
+with open("redditFP-" + DOR + ".csv", "w+") as fo: # with open() implicitly handles any exceptions raised. also don't need to close file
+	# Write the CSV column headers
+	fo.write(", ".join(xpaths) + ", timestamp" + "\n")
 
-# Write the CSV column headers
-fo.write(", ".join(xpaths) + ", timestamp" + "\n")
-
-# Print out comma-separated post information
-for post in posts:
-
-	attrlist = []
-
-	for attribute in xpaths:
-		# Using each xpath attribute to grab the corresponding information from the post. 
-		# Also encode it to ascii and remove commas and quotes so that won't mess up the CSV parsing later
-		attrlist.append(post.xpath(xpaths[attribute])[0].encode('ascii', 'ignore').translate(None, '",'))
-
-	fo.write(", ".join(attrlist) + ", " + timestamp + "\n")
-
-# Close the file
-fo.close()
+	# Print out comma-separated post information
+	for post in posts:
+		attrlist = []
+		for attribute in xpaths:
+			# Using each xpath attribute to grab the corresponding information from the post. 
+			# Also encode it to ascii and remove commas and quotes so that won't mess up the CSV parsing later
+			attrlist.append(post.xpath(xpaths[attribute])[0].encode('ascii', 'ignore').translate(None, '",'))
+		fo.write(", ".join(attrlist) + ", " + timestamp + "\n")
