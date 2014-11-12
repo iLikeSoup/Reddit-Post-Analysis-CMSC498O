@@ -7,7 +7,7 @@ import datetime
 # Get the time and date of request (TOR) and date of request (DOR)
 ts = time.time()
 DOR = datetime.datetime.fromtimestamp(ts).strftime('%m_%d_%Y')
-timestamp = datetime.datetime.fromtimestamp(ts).strftime('%m_%d_%Y %H:%M:%S')
+timestamp = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d %H:%M:%S')
 
 # Pull Reddit "front-page" source code
 #page = open('redditsource.html', 'r').read()
@@ -43,6 +43,8 @@ for post in posts:
 	attrlist = []
 
 	for attribute in xpaths:
+		# Using each xpath attribute to grab the corresponding information from the post. 
+		# Also encode it to ascii and remove commas and quotes so that won't mess up the CSV parsing later
 		attrlist.append(post.xpath(xpaths[attribute])[0].encode('ascii', 'ignore').translate(None, '",'))
 
 	fo.write(", ".join(attrlist) + ", " + timestamp + "\n")
