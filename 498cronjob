@@ -1,1 +1,1 @@
-@reboot python /home/terrapin/jackGithub/Reddit-Post-Analysis-CMSC498O/pullreddit.py
+@hourly python /home/terrapin/jackGithub/Reddit-Post-Analysis-CMSC498O/pullreddit.py
