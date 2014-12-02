@@ -10,7 +10,7 @@ $(document).ready(function(){
 	    .size([diameter, diameter])
 	    .padding(1.5);
 
-	var svg1 = d3.select(".graph1")
+	var svg1 = d3.select(".diagram1")
 		.append("svg")
 	    .attr("width", diameter)
 	    .attr("height", diameter)
@@ -55,7 +55,7 @@ $(document).ready(function(){
 			.attr("class","node")
 			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
-		var color = d3.scale.category10();
+		var color = d3.scale.category20c();
 
 		node.append("title")
 			.text(function(d) { return d.name + "\n " + format(d.value); });
