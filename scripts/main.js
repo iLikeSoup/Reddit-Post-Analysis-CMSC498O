@@ -21,7 +21,7 @@ $(document).ready(function(){
 	// Hit GitHub to retrieve the dataset
 	$.ajax({
         type: "GET",
-        url: "https://raw.githubusercontent.com/JackLot/Reddit-Post-Analysis-CMSC498O/master/pulls/dataset/csvExport/domains.csv",
+        url: "https://rawgit.com/JackLot/Reddit-Post-Analysis-CMSC498O/master/pulls/dataset/csvExport/domains.csv",
         dataType: "text",
         success: function(data) { processData(data); }
      });
