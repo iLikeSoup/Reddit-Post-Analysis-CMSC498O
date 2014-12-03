@@ -17,6 +17,7 @@
 
 	<script src="scripts/main.js" charset="utf-8"></script>
 	<script src="scripts/domainDiagram.js" charset="utf-8"></script>
+	<script src="scripts/subredditDiagram.js" charset="utf-8"></script>
 
 	<link href='http://fonts.googleapis.com/css?family=Raleway:400,500,700' rel='stylesheet' type='text/css'>
 
@@ -33,22 +34,34 @@
 
 	<div class="container">
 
-	<div class="headerText"><strong>Introduction.</strong></div> 
-	<p style="font-size: 22px;">
-		Reddit is a website where a huge community of users submit content and vote on others submitted content. The premise is simple and the top 25 or so <u>front-page</u> posts change hourly thanks to the active community. There are smaller communities, or <u>subreddits</u>, within the Reddit website where users with similar interests can post/vote on content related only to that category. With our project, we wanted to delve into the posts that make it to the front-page and what types of patterns we could deduce from front-page post data.
-	</p>
+		<div class="headerText"><strong>Introduction.</strong></div> 
+		<p style="font-size: 22px;">
+			Reddit is a website where a huge community of users submit content and vote on others submitted content. The premise is simple and the top 25 or so <u>front-page</u> posts change hourly thanks to the active community. There are smaller communities, or <u>subreddits</u>, within the Reddit website where users with similar interests can post/vote on content related only to that category. With our project, we wanted to delve into the posts that make it to the front-page and what types of patterns we could deduce from front-page post data.
+		</p>
 
-	<div class="headerText"><strong>Data Gathering and Wrangling</strong></div>
+		<div class="headerText"><strong>Data Gathering and Wrangling</strong></div>
 
-	<div class="headerText"><strong>Data Analysis with Python and Pandas</strong></div>
+		<div class="headerText"><strong>Data Analysis with Python and Pandas</strong></div>
 
-	<div class="headerText"><strong>D3.js Visualizations</strong></div>
+		<div class="headerText"><strong>D3.js Visualizations</strong></div>
 
-	<h2>What kinds of posts are Reddit users most interested in?</h2>
-	<p>
-		Reddit allows users to post content from many different sources: video sites, like Youtube, and image sharing sites, like Imgur, are especially popular. Scroll over the visualization below to see how popular certain types of posts are (the bigger the circle the more popular).
-	</p>
-	<div class="diagram1"></div>
+		<h2>Subreddit Popularity</h2>
+		<p>
+			Subreddits allow reddit users to group their posts by category and subject matter, but just how popular are some subreddits? Toggle through the popularity measures below to see how the most popular subreddits stack up against each other when it comes to front page posts.
+		</p><br />
+		<div class="btn-group" role="group" aria-label="...">
+		  <button type="button" class="btn btn-default d2btn" att="numComments" >Number of comments</button>
+		  <button type="button" class="btn btn-default d2btn" att="numOccurances" >Number of front-page occurances</button>
+		  <button type="button" class="btn btn-default d2btn" att="avgRank" >Average Rank</button>
+		  <button type="button" class="btn btn-default d2btn" att="avgScore" >Average Score</button>
+		</div>
+		<div class="diagram2"></div>
+
+		<h2>What kinds of posts are Reddit users most interested in?</h2>
+		<p>
+			Reddit allows users to post content from many different sources: video sites, like Youtube, and image sharing sites, like Imgur, are especially popular. Scroll over the visualization below to see how popular certain types of posts are (the bigger the circle the more popular).
+		</p>
+		<div class="diagram1"></div>
 
 	</div>
 	

@@ -1,7 +1,7 @@
 $(document).ready(function(){
 
 	// Setup for the D3 bubbles
-	var diameter = 960,
+	var diameter = getSVGHeight(),
 	    format = d3.format(",d"),
 	    color = d3.scale.category20c();
 
@@ -32,7 +32,7 @@ $(document).ready(function(){
 	function diagram1(rawCSV)
 	{
 		var dataframe = convertCSV(rawCSV);
-		console.log(dataframe);
+		//console.log(dataframe);
 
 		//Building the datatree to be used with D3
 		var root = {};
