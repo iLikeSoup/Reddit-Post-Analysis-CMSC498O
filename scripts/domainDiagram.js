@@ -8,7 +8,7 @@ $(document).ready(function(){
 	var bubble = d3.layout.pack()
 	    .sort(null)
 	    .size([diameter, diameter])
-	    .padding(1.5);
+	    .padding(2);
 
 	var svg1 = d3.select(".diagram1")
 		.append("svg")

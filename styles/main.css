@@ -22,9 +22,14 @@ h1{
 	font-size: 40px !important;
 }
 
+hr{
+	border-top: 1px solid #E7E7E7 !important;
+}
+
 h2{
 	font-family: Raleway, sans-serif !important;
 	/*margin-left: 25px;*/
+	margin-top: 30px !important;
 }
 
 h2.largerh2{
@@ -33,7 +38,30 @@ h2.largerh2{
 }
 
 p{
-	/*padding-left: 25px;*/
+	padding-left: 10px;
 	font-size: 20px;
 	font-weight: 500;
+}
+
+.bar {
+  fill: #ff5700;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.chartCaption{
+	margin: 0 0 30px 20px; font-size: 12pt
 }

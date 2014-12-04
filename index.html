@@ -10,14 +10,18 @@
 
 	<!-- Latest compiled and minified Bootstrap CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
 	<!-- Optional Bootstrap theme -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+
 	<!-- Latest compiled and minified Bootstrap JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
+	<!-- All my custom D3 visualizations -->
 	<script src="scripts/main.js" charset="utf-8"></script>
 	<script src="scripts/domainDiagram.js" charset="utf-8"></script>
 	<script src="scripts/subredditDiagram.js" charset="utf-8"></script>
+	<script src="scripts/rankDiagram.js" charset="utf-8"></script>
 
 	<link href='http://fonts.googleapis.com/css?family=Raleway:400,500,700' rel='stylesheet' type='text/css'>
 
@@ -36,14 +40,14 @@
 
 		<div class="headerText"><strong>Introduction.</strong></div> 
 		<p style="font-size: 22px;">
-			Reddit is a website where a huge community of users submit content and vote on others submitted content. The premise is simple and the top 25 or so <u>front-page</u> posts change hourly thanks to the active community. There are smaller communities, or <u>subreddits</u>, within the Reddit website where users with similar interests can post/vote on content related only to that category. With our project, we wanted to delve into the posts that make it to the front-page and what types of patterns we could deduce from front-page post data.
+			Reddit is a website where a huge community of users submit content and vote (i.e. upvote or downvote) on others submitted content. The premise is simple and the top 25 or so <u>front-page</u> posts change hourly thanks to the active community. There are smaller communities, or <u>subreddits</u>, within the Reddit website where users with similar interests can post/vote on content related only to that category. With our project, we wanted to delve into the posts that make it to the front-page and what types of patterns we could deduce from front-page post data.
 		</p>
 
-		<div class="headerText"><strong>Data Gathering and Wrangling</strong></div>
+		<hr /><div class="headerText"><strong>Data Gathering and Wrangling</strong></div>
 			<p>
 				<a href="https://en.wikipedia.org/wiki/Comma-separated_values">.csv files</a>
 			</p>
-		<div class="headerText"><strong>Data Analysis with Python and Pandas</strong></div>
+		<hr /><div class="headerText"><strong>Data Analysis with Python and Pandas</strong></div>
 		<p>
 			In order to perform data analysis on the data that we scraped from Reddit, we used <a href="http://nbviewer.ipython.org/github/iLikeSoup/Reddit-Post-Analysis-CMSC498O/blob/master/pulls/dataset/CMSC498O%20Final%20Project.ipynb">IPython</a> for our language and environment. For libraries we used pandas and NumPy to perform the bulk of our analysis. 
 		</p>
@@ -114,21 +118,50 @@
 			Similar to the idea from the previous table, does the length of the username have an impact on popular a post on Reddit will be? We used all the tools from before to produce this table. With this table, we had created a table for each of the main categories from the datasets that we scraped from Reddit: scores, rankings, domains and content, subreddit categories, title, and username.
 		</p>
 
-		<div class="headerText"><strong>D3.js Visualizations</strong></div>
 
-		<h2>Subreddit Popularity</h2>
+		<!-- ------------------------------------------------------------------------ -->
+
+		<hr /><div class="headerText"><strong>D3 Visualizations</strong></div>
+
+		<h2>What constitutes a front page post?</h2>
+		<p>
+			The posts that make it to the front page were viewed and upvoted more than any of the thousands (even tens and hundreds of thousands) of posts submitted on a particular day. Reddit's ranking algorithm combines a "freshness" weight, along with the number of upvotes to calculate the overall rank of a post.
+		</p>
+			<br />
+				<div class="rtKey" style="float:right; width: 550px;">
+					<strong>X Axis</strong>: Post rank, <br /><strong>Y Axis</strong>: Average number of <span id="rtytext">upvotes</span> received
+				</div>
+			<div class="btn-group" role="group" aria-label="..." style="float: right; margin-right: 20px; position: relative">
+				  <button type="button" class="btn btn-default rtbtn active" att="avgUpvotes" ylabel="upvotes" >Average upvotes</button>
+				  <button type="button" class="btn btn-default rtbtn" att="avgComments" ylabel="comments" >Average # comments</button>
+			</div>
+
+		<div class="rankChart"></div>
+		<p class="chartCaption">
+			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> As you can see by toggling the bar chart options (above) number of comments received by posts don't seem to follow any pattern unlike the avg number of upvotes received which seem to follow a linearly decreasing pattern (at least for the first 50 or so posts). Additionally, front-page posts receive much less comments than upvotes, meaning users are more apt to upvote a post but not comment on it.
+		</p>
+		<p>
+			Posts that make it to the front-page usually have multiple thousands of upvotes (sometimes as high as 5000) but Reddit's algorithm also factors in a timeliness factor. Density of votes leading up to the present time also means a post may make it to the front page. Of a front page posts, just how many make it to 3, 4 or even 5K upvotes? And do the majority of front-page posts even need that many to make it there in the first place?
+		</p>
+		<div class="diagram4"></div>
+
+		<hr /><h2>Subreddit Popularity</h2>
 		<p>
 			Subreddits allow reddit users to group their posts by category and subject matter, but just how popular are some subreddits? Toggle through the popularity measures below to see how the most popular subreddits stack up against each other when it comes to front page posts.
 		</p><br />
-		<div class="btn-group" role="group" aria-label="...">
-		  <button type="button" class="btn btn-default d2btn" att="numComments" >Number of comments</button>
-		  <button type="button" class="btn btn-default d2btn" att="numOccurances" >Number of front-page occurances</button>
-		  <button type="button" class="btn btn-default d2btn" att="avgRank" >Average Rank</button>
-		  <button type="button" class="btn btn-default d2btn" att="avgScore" >Average Score</button>
+
+		<div class="btn-group" role="group" aria-label="..." style="margin-left: 20px;">
+		  <button type="button" class="btn btn-default d2btn active" att="numOccurances">Total number of front-page occurances</button>
+		  <button type="button" class="btn btn-default d2btn" att="numComments">Total number of comments</button>
+		  <button type="button" class="btn btn-default d2btn" att="avgRank">Average Rank</button>
+		  <button type="button" class="btn btn-default d2btn" att="avgScore">Average # Upvotes</button>
 		</div>
 		<div class="diagram2"></div>
+		<p class="chartCaption">
+			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> As you can see by toggling through the bubble chart options (above), there are certainly subreddits which hit the front page more frequently than others. Of the subreddits that make the front page there are definetly ones that endage the community more (shown by number of comments). When it comes down to average rank and score, subreddits which make the front page tend to have a more-or-less balanced number of upvotes and ranking within the front page.
+		</p>
 
-		<h2>What kinds of posts are Reddit users most interested in?</h2>
+		<hr /><h2>What kinds of posts are Reddit users most interested in?</h2>
 		<p>
 			Reddit allows users to post content from many different sources: video sites, like Youtube, and image sharing sites, like Imgur, are especially popular. Scroll over the visualization below to see how popular certain types of posts are (the bigger the circle the more popular).
 		</p>
