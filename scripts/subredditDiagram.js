@@ -26,7 +26,7 @@ $(document).ready(function(){
         type: "GET",
         url: "datasets/subreddits.csv",
         dataType: "text",
-        success: function(data) { drawDiagramSetDataframe(data, "numComments"); }
+        success: function(data) { drawDiagramSetDataframe(data, "numOccurances"); }
      });
 	
 	function convertCSV(csvRaw){
@@ -34,6 +34,7 @@ $(document).ready(function(){
 	}
 
 	function drawDiagramSetDataframe(rawCSV, attribute){
+
 		dataframe = convertCSV(rawCSV);
 
 		var node = svg1
@@ -67,7 +68,7 @@ $(document).ready(function(){
 	function redrawDiagram(attribute)
 	{
 
-		console.log(attribute);
+		//console.log(attribute);
 
 		var node = svg1
 			.selectAll(".node")
@@ -129,7 +130,7 @@ $(document).ready(function(){
 			var item = {};
 			item.name = dataframe[i]["subreddit"];
 			item.value = Number(dataframe[i][attribute]);
-			item.group = Number(dataframe[i]["numComments"]);
+			item.group = Number(dataframe[i]["numComments"]); //In this case the group attribute is just used for coloring the cirlces
 			root.children.push(item);
 		}
 
@@ -141,6 +142,7 @@ $(document).ready(function(){
 
 	// Update the bubbles with the selected attribute
 	$(".d2btn").click(function(){
+		$(this).addClass("active").siblings().removeClass("active");
 		redrawDiagram($(this).attr("att"));
 	});
 
