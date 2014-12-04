@@ -44,18 +44,102 @@
 		</p>
 
 		<hr /><div class="headerText"><strong>Data Gathering and Wrangling</strong></div>
+			<p>
+				The data gathering that we performed was done through a Python script and a cron job. We formatted the data into 
+				<a href="https://en.wikipedia.org/wiki/Comma-separated_values">.csv files</a> and used shell scripts to clean the data. After those 3 steps, the data would be ready to undergo analysis.
+			</p>
+
+			<h3><strong>Python script</strong></h3>
+			<p>
+				The <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/blob/master/pullreddit.py">Python script</a> we wrote required a parser to comb through the raw html text that we scraped. We used the <a href="https://pypi.python.org/pypi/lxml/3.4.0">lxml</a> module to satisfy this need. It provided us with several library functions that made extracting the information we desired much easier. We used the built-in urllib2 library to perform the actual scraping, and used a GET parameter in the URL to grab the top 100 posts. The data was then aggregated and formatted into a .csv file.
+			</p>
+
+			<h3><strong>Cron job</strong></h3>
+			<p>
+				The purpose of the <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/blob/master/498cronjob">cron job</a> was to automate the execution of the Python script so that we wouldn't have to run it manually. We directed the utility to run hourly so that we could have multiple datasets from each day that we could use in case there was an issue.
+			</p>
+
+			<h3><strong>Shell scripts</strong></h3>
+			<p>
+				The set of <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/blob/master/cleanPulls.sh">shell</a> <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/blob/master/pulls/dataset/cleanCSV.sh">scripts</a> were used to clean the data and prepare it for the daya analysis. We had to remove extraneous spacing in the scraped data and standardize formats by deleting extra words (e.g., the number of comments would be '5' instead '5 comments').
+			</p>
+
 
 		<hr /><div class="headerText"><strong>Data Analysis with Python and Pandas</strong></div>
 		<p>
-			In order to perform data analysis on the data that we scraped from Reddit, we used <a href="http://nbviewer.ipython.org/github/iLikeSoup/Reddit-Post-Analysis-CMSC498O/blob/master/pulls/dataset/CMSC498O%20Final%20Project.ipynb">IPython</a> for our language and environment. For libraries we used pandas and numpy to perform the bulk of our analysis. 
+			In order to perform data analysis on the data that we scraped from Reddit, we used <a href="http://nbviewer.ipython.org/github/iLikeSoup/Reddit-Post-Analysis-CMSC498O/blob/master/pulls/dataset/CMSC498O%20Final%20Project.ipynb">IPython</a> for our language and environment. For libraries we used pandas and NumPy to perform the bulk of our analysis. 
 		</p>
 		<p>
-			The basic mentality we used to identify patterns was to try to find if some characteristic in the data caused a spike in popularity (whether that popularity was measured in ranking of the posts, scores of the posts, or the number of comments on the posts). To do this, we had to iterate over all the data we scraped and had to keep track of various data associated with the category that we were focusing on.
+			The basic mentality we used to identify patterns was to try to find if some characteristic in the data caused a spike in popularity (whether that popularity was measured in ranking of the posts, scores of the posts, or the number of comments on the posts). To do this, we had to iterate over all the data we scraped, and we had to keep track of various data associated with the category that we were focusing on.
+		</p>
+		<p>
+			Since we stored the data that we scraped from Reddit in a series of .csv files, it was a simple matter to import it into pandas as a DataFrame object. What is a DataFrame object? In order to understand that, you need to understand what makes up a DataFrame.
+		</p>
+
+		<h3><strong>NumPy</strong></h3>
+		<p>
+			NumPy is a 3rd party library in Python that is quite popular. The most important aspect of NumPy is its array. A NumPy array provides a more intuitive way to represent a multi-dimensional array than the standard Python package can do.
+		</p>
+
+		<h3><strong>Pandas</strong></h3>
+		<p>
+			Pandas is also a 3rd party library in Python that enjoys widespread usage. There are two main data structures in Pandas, the Series object and the DataFrame object. You can think of a Series as a 1-dimensional NumPy array (with a few additional features). A DataFrame can be thought of as a dictionary of Series objects. In both Series and DataFrames, you can use custom column and index names, as well as custom index ordering. This last feature is crucial to data analysis.
+		</p>
+
+		<h3><strong>What tools were most important?</strong></h3>
+		<p>
+			A DataFrame is an easy and intuitive way to represent a table. All of the data analysis we performed involved using DataFrames. An especially powerful feature that DataFrames inherits from NumPy is the ability to perform boolean indexing. This allows us to query for posts with specific properties in a succint manner. For example, suppose we wanted to find all posts that had a top 10 ranking. It is a simple matter to find all posts that satisfy that property using boolean indexing.
+		</p>
+		<p>
+			Two other important tools that we used were <a href="https://en.wikipedia.org/wiki/Regular_expression">regular expressions</a> and <a href="https://en.wikipedia.org/wiki/Heap_(data_structure)">heaps</a>. Regular expressions, or regex for short, is used for pattern matching in strings of characters. An example of what we used regex for in our project was to identify what the type of content that a post linked to. E.g., we searched for posts with the strings ".png" or ".jpg" to identify what posts were of images. The heap was used to sort the content of many of our tables. For instance, to identify which subreddits had the most comments, we inserted that the subreddit and its number of comments into a heap in order to sort it in ascending order with the highest number of comments on top.
+		</p>
+
+		<h3><strong>IPython Walkthrough</strong></h3>
+		<p>Note: to access the IPython notebook click <a href="http://nbviewer.ipython.org/github/iLikeSoup/Reddit-Post-Analysis-CMSC498O/blob/master/pulls/dataset/CMSC498O%20Final%20Project.ipynb">here</a></p>
+
+		<h4><u>Scores</u></h4>
+		<img src="images/scoresTable.PNG" alt="Scores Table" width=170 height=220>
+		<p>
+			We primarily used boolean indexing to calculate the table of scores. We decided to group the indices in the thousands range (0-999, 1000-1999, etc...) in order to present the data in a clear and concise fashion. Since we already had our dataset present, we knew that no post achieved a score of 6000 or higher. Therefore it was simple, to find the posts with a score >= 5000. The other range of scores proved to be more tricky. Initially we thought that we could use conjuction and disjunction within the boolean indexing, but the semantics of the operation did not turn out as we anticipated. We found a work-around by applying another tier of boolean indexing to the data. For example, to find the posts with a score that fit the criteria of 4000 <= score < 5000, we first found all the posts that had a score >= 4000 and stored those posts in another DataFrame. Then we applied the second tier of boolean indexing to that new DataFrame and found all the posts (in the set of posts with score >= 4000) that had a score < 5000.
+		</p>
+
+		<h4><u>Rank</u></h4>
+		<img src="images/rankTable.PNG" alt="Rank Table" width=325 height=375>
+		<p>
+			This motivation behind this table was to see how the rank of a post affected the number of comments and the score associated with the post. We used boolean indexing to aggregate the top 100 ranks of the Reddit posts. As our datasets only included the top 100 posts of each day, it was a little unnecessary to use boolean indexing for this. Originally we were only going to find the posts of the top 10 ranks of the Reddit posts, but decided to expand to the entire dataset after seeing the capabilities of <a href="#d3header">D3.js</a>. The simplest way of adapting the code was to code the boolean indexing paramters from rank <= 10 to rank <= 100. We then stored each rank in a list to be used as indices in the table. After that, we iterated through the posts and kept track of the number of comments and score for each.
+		</p>
+
+		<h4><u>Domain</u></h4>
+		<img src="images/domainTable.PNG" alt="Domain Table" width=1000 height=400>
+		<p>
+			This table was meant to show the relationship between content type and the domain of the URL from the content that the Reddit post referenced, along with the associated score, rank, and number of comments. We began by storing the data in a dictionary, with the key being the domain name and the values being a list that was composed of the count (the number of times a domain was used in the dataset, so we could calculate averages), the aggregated score, rank, and number of comments, and the content type associated with that particular domain. In order to identify the content type, we had to perform regex on the URL that the Reddit post linked to. The regex we used involved <a href="https://docs.python.org/2/howto/regex.html#non-capturing-and-named-groups">named groups</a>. Basically, we pre-compiled a regex pattern for each of the 4 content types that we were categorizing (images, webpages, Reddit posts, and videos). Each pattern was put in a named group to make it easy to identify which regex produced a match. Then we ran the dataset against each of the patterns, keeping track of when a match occurred and storing the data accordingly.
+		</p>
+		<p>
+			The sorting of this table was tricky as well. We had to utilize both primary and secondary sorting in the heap to order the table appropriately. The way that Python's <a href="https://docs.python.org/2/library/heapq.html">heapq</a> performs this sorting is by passing in a tuple when inserting into the heap. We passed in an integer that mapped to each content type in a dictionary as the first element in the tuple, the number of occurrences associated with the domain as the second element in the tuple, and the domain name as the final element (this final element was needed more so that the appropriate data could be accessed later in the code than for sorting). After that we aggregated the data to line up together in a parallel fashion in various lists, and then aggreated those lists into a dictionary that could be passed in as input to create the DataFrame that represented the finalized product.
+		</p>
+
+		<h4><u>Subreddit</u></h4>
+		<img src="images/subredditTable.PNG" alt="Subreddit Table" width=580 height=375>
+		<p>
+			For this table we displayed the subreddits with the highest number of comments. This particular dataset required some of the data to be cleaned within the Python code. The reasons that this wasn't handled in the previous portion of the project was because it was a lot simpler to process this particular cleaning in this iteration with Python than to do it with the Unix tools. Some of the subreddits didn't have /r/ preprended in front of it, so it was a simple matter to add it here. The actual data analytics for this table didn't require anything new from what the previous tables required. It involved iterating through the data, keeping track of subreddits and the associated number of comments, rank, score, and number of occurrences. We used a heap to sort the data based on highest number of comments, and then plugged all the data into a DataFrame.
+		</p>
+
+		<h4><u>Length of Title</u></h4>
+		<img src="images/titleTable.PNG" alt="Title Length Table" width=700 height=480>
+		<p>
+			Does the length of a title have an impact on how popular a post on Reddit is? That was what we were wondering when we created this table. It invovled all the standard mechanisms from before (dictionaries, heaps, regex, etc...). The one additional column of data that was required was to calculate the number of words in a title. This is a fairly simple calculation as it turns out. It involves using regex to count the number of spaces in the title, and then adding one to that value (because 2 words will have 1 space in between them, 3 words have 2 spaces in total, etc...).
+		</p>
+
+		<h4><u>Length of Username</u></h4>
+		<img src="images/usernameTable.PNG" alt="Username Length Table" width=450 height=350>
+		<p>
+			Similar to the idea from the previous table, does the length of the username have an impact on popular a post on Reddit will be? We used all the tools from before to produce this table. With this table, we had created a table for each of the main categories from the datasets that we scraped from Reddit: scores, rankings, domains and content, subreddit categories, title, and username.
 		</p>
 
 
 		<!-- ------------------------------------------------------------------------ -->
 
+		<a name="d3header"></a>
 		<hr /><div class="headerText"><strong>D3 Visualizations</strong></div>
 
 		<h2>What constitutes a front page post?</h2>
