@@ -67,7 +67,6 @@ $(document).ready(function(){
 
 	function redrawDiagram(attribute)
 	{
-
 		//console.log(attribute);
 
 		var node = svg1

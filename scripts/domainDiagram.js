@@ -1,78 +1,176 @@
 $(document).ready(function(){
 
 	// Setup for the D3 bubbles
-	var diameter = getSVGHeight(),
-	    format = d3.format(",d"),
-	    color = d3.scale.category20c();
+	var diameter = getSVGHeight();
+	var format = d3.format(",d");
+	var color = d3.scale.category10();
+	var duration = 600;
+	var delay = 0;
 
 	var bubble = d3.layout.pack()
 	    .sort(null)
 	    .size([diameter, diameter])
 	    .padding(2);
 
-	var svg1 = d3.select(".diagram1")
+	var svg1 = d3.select(".domainBubbles")
 		.append("svg")
 	    .attr("width", diameter)
 	    .attr("height", diameter)
 	    .attr("class", "bubble");
 
+	// Objects for reading and storing data from the CSV in correct formats
+	var typeTotals = {
+		image: { numTimesUsed: 0, avgComments: 0, avgRank: 0, avgScore: 0, numDomains: 0 },
+		video: { numTimesUsed: 0, avgComments: 0, avgRank: 0, avgScore: 0, numDomains: 0 },
+		webpage: { numTimesUsed: 0, avgComments: 0, avgRank: 0, avgScore: 0, numDomains: 0 },
+		selfpost: { numTimesUsed: 0, avgComments: 0, avgRank: 0, avgScore: 0, numDomains: 0 }
+	};
 
-	// Hit GitHub to retrieve the dataset
-	$.ajax({
-        type: "GET",
-        url: "datasets/domains.csv",
-        dataType: "text",
-        success: function(data) { diagram1(data); }
-     });
+	var typeRoot = { name: "Types", children: [] };
+
+	var domainRoots = {
+		image: { name: "Images", children: [] },
+		video: { name: "Videos", children: [] },
+		webpage: { name: "Webpages", children: [] },
+		selfpost: { name: "Selfposts", children: [] }
+	};
 	
-	function convertCSV(csvRaw){
-		return $.csv.toObjects(csvRaw);
-	}
 
-	function diagram1(rawCSV)
-	{
-		var dataframe = convertCSV(rawCSV);
-		//console.log(dataframe);
+	// Read in the CSV
+	// CSV headers: domain, type, numTimesUsed, avgComments, avgRank, avgScore
+	// ---------------------------------------------------------------------------------------------------
+	d3.csv("datasets/domains.csv", function(error, data) {
 
-		//Building the datatree to be used with D3
-		var root = {};
-		root.name = "Interactions";
-		root.children = new Array();
-		for (i=0; i < dataframe.length; i++){
-			var item = {};
-			item.name = dataframe[i]["domain"];
-			item.value = Number(dataframe[i]["numTimesUsed"]);
-			item.group = getD1Group(dataframe[i]["numTimesUsed"]);
-			root.children.push(item);
-		}
+		createTrees(data);
 
+		// Create initial bubbles representing types of posts
 		var node = svg1
 			.selectAll(".node")
-			.data(bubble.nodes(root)
-			.filter(function(d){ return !d.children;}))
-			.enter()
+			.data(bubble.nodes(typeRoot)
+				.filter(function(d){ return !d.children;})
+			);
+
+		node.enter() // Here is where the original data is entered
 			.append("g")
 			.attr("class","node")
-			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
-
-		var color = d3.scale.category20c();
+			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+			.append("title")
+			.text(function(d) { return d.name + "\n " + format(d.value); });
 
 		node.append("title")
 			.text(function(d) { return d.name + "\n " + format(d.value); });
 
 		node.append("circle")
 			.attr("r", function(d) { return d.r; })
-			.style("fill", function(d) { return color(d.value); });
+			.style("fill", function(d) { return color(d.group); })
+			.on("click", function(d) { // Onclick redraw the bubbles
+		        console.log(d.child)
+		        redrawDiagram(d.child);
+		        $("#domainKey").text(d.name.charAt(0).toUpperCase() + d.name.slice(1) + "s");
+		    });
 
 		node.append("text")
 			.attr("dy", ".3em")
 			.style("text-anchor", "middle")
 			.text(function(d) { return d.name.substring(0, d.r / 3); });
+
+		$('.gobackbtn').click(function(){
+			redrawDiagram(typeRoot);
+			$("#domainKey").text("Post types");
+		})
+
+	});
+
+	// Redraw bubbles with new dataset
+	function redrawDiagram(data)
+	{
+		var node = svg1
+			.selectAll(".node")
+			.data(bubble.nodes(data)
+				.filter(function(d){ return !d.children;})
+			);
+
+		var nodeEnter = node.enter() // Here is where the original data is entered
+			.append("g")
+			.attr("class","node")
+			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+
+			nodeEnter.append("title")
+				.text(function(d) { return d.name + "\n " + format(d.value); });
+
+			nodeEnter.append("circle")
+				.attr("r", function(d) { return d.r; })
+				.style("fill", function(d) { return color(d.group); });
+
+			nodeEnter.append("text")
+				.attr("dy", ".3em")
+				.style("text-anchor", "middle")
+				.text(function(d) { return d.name.substring(0, d.r / 3); });
+
+		node.transition()
+			.duration(duration)
+			.delay(function(d, i) {delay = i * 7; return delay;}) 
+			.attr('transform', function(d) { return 'translate(' + d.x + ',' + d.y + ')'; })
+			.attr('r', function(d) { return d.r; })
+			.style('opacity', 1); // force to 1, so they don't get stuck below 1 at enter()
+
+		node.select("circle")
+	        .transition().duration(1000)
+	        .attr("r", function (d) { return d.r; })
+
+	    node.select("text")
+	    	.text(function(d) { return d.name.substring(0, d.r / 3); });
+
+		node.exit()
+			.transition()
+			.duration(duration + delay)
+			.style('opacity', 0)
+			.remove();
+
 	}
 
-	function getD1Group(numTimesUsed){
-		var colors = ["color1"];
-		return colors[0];
+	function createTrees(data)
+	{
+		// Sum up the totals for each domain type
+		// Post processing will take care of averaging out the '/avg.*/' columns
+		for (i = 0; i < data.length; i++)
+		{
+			var entry = data[i];
+
+			typeTotals[entry.type].numTimesUsed += parseInt(entry.numTimesUsed);
+			typeTotals[entry.type].avgComments += parseInt(entry.avgComments);
+			typeTotals[entry.type].avgRank += parseInt(entry.avgRank);
+			typeTotals[entry.type].avgScore += parseInt(entry.avgScore);
+			typeTotals[entry.type].numDomains += 1;
+
+			// Build out the csv entry item and add it to the appropriate root
+			var item = {};
+			item.name = entry.domain;
+			item.value = Number(entry.numTimesUsed);
+			item.group = Number(entry.numTimesUsed);
+			item.original = entry;
+			domainRoots[entry.type].children.push(item);
+
+		}
+
+		// Create the initial tree of domain types
+		for (var property in typeTotals) 
+		{
+			var item = {};
+			var type = typeTotals[property];
+
+			// Finalize the '/avg.*/' property calculation
+			type.avgComments /= type.numDomains;
+			type.avgRank /= type.numDomains;
+			type.avgScore /= type.numDomains;
+
+			item.name = property;
+			item.value = Number(type.numTimesUsed);
+			item.group = Number(type.numTimesUsed);
+			item.original = type;
+			item.child = domainRoots[property];
+			typeRoot.children.push(item);
+		}
 	}
 
 	d3.select(self.frameElement).style("height", diameter + "px");

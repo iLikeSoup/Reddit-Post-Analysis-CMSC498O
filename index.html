@@ -62,11 +62,10 @@
 		<p>
 			The posts that make it to the front page were viewed and upvoted more than any of the thousands (even tens and hundreds of thousands) of posts submitted on a particular day. Reddit's ranking algorithm combines a "freshness" weight, along with the number of upvotes to calculate the overall rank of a post.
 		</p>
-			<br />
-				<div class="rtKey" style="float:right; width: 550px;">
+				<div class="rtKey" style="float:right; width: 500px; position: relative; top: 50px; z-index: 50">
 					<strong>X Axis</strong>: Post rank, <br /><strong>Y Axis</strong>: Average number of <span id="rtytext">upvotes</span> received
 				</div>
-			<div class="btn-group" role="group" aria-label="..." style="float: right; margin-right: 20px; position: relative">
+			<div class="btn-group" role="group" aria-label="..." style="float: right; margin-right: 20px; position: relative; top: 50px; z-index: 50">
 				  <button type="button" class="btn btn-default rtbtn active" att="avgUpvotes" ylabel="upvotes" >Average upvotes</button>
 				  <button type="button" class="btn btn-default rtbtn" att="avgComments" ylabel="comments" >Average # comments</button>
 			</div>
@@ -96,11 +95,21 @@
 			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> As you can see by toggling through the bubble chart options (above), there are certainly subreddits which hit the front page more frequently than others. Of the subreddits that make the front page there are definetly ones that endage the community more (shown by number of comments). When it comes down to average rank and score, subreddits which make the front page tend to have a more-or-less balanced number of upvotes and ranking within the front page.
 		</p>
 
-		<hr /><h2>What kinds of posts are Reddit users most interested in?</h2>
+		<hr /><h2>What kinds of posts are reddit users most interested in?</h2>
 		<p>
 			Reddit allows users to post content from many different sources: video sites, like Youtube, and image sharing sites, like Imgur, are especially popular. Scroll over the visualization below to see how popular certain types of posts are (the bigger the circle the more popular).
 		</p>
-		<div class="diagram1"></div>
+
+		<div style="float: right; margin-right: 50px; width: 400px; position: relative; top: 50px;">
+			<button type="button" class="btn btn-default gobackbtn" style="float: right" aria-label="Left Align">
+				<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset diagram
+			</button>
+			<h3 style="float: left; margin-top: 7px;">
+				<em>Showing: </em><strong id="domainKey">Post types</strong>
+			</h4>
+		</div>
+
+		<div class="domainBubbles"></div>
 
 	</div>
 	

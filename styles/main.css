@@ -65,3 +65,7 @@ p{
 .chartCaption{
 	margin: 0 0 30px 20px; font-size: 12pt
 }
+
+.domainBubbles circle:hover{
+	cursor: pointer;
+}

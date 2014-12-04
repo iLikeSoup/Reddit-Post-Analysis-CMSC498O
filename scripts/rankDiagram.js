@@ -1,8 +1,8 @@
 $(document).ready(function(){
 
-	var margin = {top: 20, right: 10, bottom: 30, left: 40};
+	var margin = {top: 0, right: 10, bottom: 30, left: 40};
 	var width = $(".rankChart").width();
-	var height = 500 - margin.top - margin.bottom;
+	var height = getSVGHeight()/2 - margin.top - margin.bottom;
 
 	var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
 
