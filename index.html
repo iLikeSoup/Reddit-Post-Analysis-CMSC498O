@@ -88,7 +88,7 @@
 		<h4><u>Rank</u></h4>
 		<img src="images/rankTable.PNG" alt="Rank Table" width=325 height=375>
 		<p>
-			This motivation behind this table was to see how the rank of a post affected the number of comments and the score associated with the post. We used boolean indexing to aggregate the top 100 ranks of the Reddit posts. As our datasets only included the top 100 posts of each day, it was a little unnecessary to use boolean indexing for this. Originally we were only going to find the posts of the top 10 ranks of the Reddit posts, but decided to expand to the entire dataset after seeing the capabilities of <a href="#headerText">D3.js</a>. The simplest way of adapting the code was to code the boolean indexing paramters from rank <= 10 to rank <= 100. We then stored each rank in a list to be used as indices in the table. After that, we iterated through the posts and kept track of the number of comments and score for each.
+			This motivation behind this table was to see how the rank of a post affected the number of comments and the score associated with the post. We used boolean indexing to aggregate the top 100 ranks of the Reddit posts. As our datasets only included the top 100 posts of each day, it was a little unnecessary to use boolean indexing for this. Originally we were only going to find the posts of the top 10 ranks of the Reddit posts, but decided to expand to the entire dataset after seeing the capabilities of <a href="#d3header">D3.js</a>. The simplest way of adapting the code was to code the boolean indexing paramters from rank <= 10 to rank <= 100. We then stored each rank in a list to be used as indices in the table. After that, we iterated through the posts and kept track of the number of comments and score for each.
 		</p>
 
 		<h4><u>Domain</u></h4>
@@ -121,6 +121,7 @@
 
 		<!-- ------------------------------------------------------------------------ -->
 
+		<a name="d3header"></a>
 		<hr /><div class="headerText"><strong>D3 Visualizations</strong></div>
 
 		<h2>What constitutes a front page post?</h2>
