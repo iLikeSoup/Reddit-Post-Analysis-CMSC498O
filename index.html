@@ -45,8 +45,26 @@
 
 		<hr /><div class="headerText"><strong>Data Gathering and Wrangling</strong></div>
 			<p>
-				<a href="https://en.wikipedia.org/wiki/Comma-separated_values">.csv files</a>
+				The data gathering that we performed was done through a Python script and a cron job. We formatted the data into 
+				<a href="https://en.wikipedia.org/wiki/Comma-separated_values">.csv files</a> and used shell scripts to clean the data. After those 3 steps, the data would be ready to undergo analysis.
 			</p>
+
+			<h3><strong>Python script</strong></h3>
+			<p>
+				The <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/blob/master/pullreddit.py">Python script</a> we wrote required a parser to comb through the raw html text that we scraped. We used the <a href="https://pypi.python.org/pypi/lxml/3.4.0">lxml</a> module to satisfy this need. It provided us with several library functions that made extracting the information we desired much easier. We used the built-in urllib2 library to perform the actual scraping, and used a GET parameter in the URL to grab the top 100 posts. The data was then aggregated and formatted into a .csv file.
+			</p>
+
+			<h3><strong>Cron job</strong></h3>
+			<p>
+				The purpose of the <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/blob/master/498cronjob">cron job</a> was to automate the execution of the Python script so that we wouldn't have to run it manually. We directed the utility to run hourly so that we could have multiple datasets from each day that we could use in case there was an issue.
+			</p>
+
+			<h3><strong>Shell scripts</strong></h3>
+			<p>
+				The set of <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/blob/master/cleanPulls.sh">shell</a> <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/blob/master/pulls/dataset/cleanCSV.sh">scripts</a> were used to clean the data and prepare it for the daya analysis. We had to remove extraneous spacing in the scraped data and standardize formats by deleting extra words (e.g., the number of comments would be '5' instead '5 comments').
+			</p>
+
+
 		<hr /><div class="headerText"><strong>Data Analysis with Python and Pandas</strong></div>
 		<p>
 			In order to perform data analysis on the data that we scraped from Reddit, we used <a href="http://nbviewer.ipython.org/github/iLikeSoup/Reddit-Post-Analysis-CMSC498O/blob/master/pulls/dataset/CMSC498O%20Final%20Project.ipynb">IPython</a> for our language and environment. For libraries we used pandas and NumPy to perform the bulk of our analysis. 
