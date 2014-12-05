@@ -69,3 +69,7 @@ p{
 .domainBubbles circle:hover{
 	cursor: pointer;
 }
+
+.resetBTN{
+	display: none;
+}

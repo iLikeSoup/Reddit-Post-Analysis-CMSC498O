@@ -140,7 +140,10 @@
 		<!-- ------------------------------------------------------------------------ -->
 
 		<a name="d3header"></a>
-		<hr /><div class="headerText"><strong>D3 Visualizations</strong></div>
+		<hr /><div class="headerText"><strong>D3 Visualizations</strong>
+		<a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/tree/gh-pages/scripts"><button type="button" class="btn btn-default btn" style="margin-left: 20px;">
+			<span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span> View D3 visualizations source code
+		</button></a></div>
 
 		<h2>What constitutes a front page post?</h2>
 		<p>
@@ -181,19 +184,37 @@
 
 		<hr /><h2>What kinds of posts are reddit users most interested in?</h2>
 		<p>
-			Reddit allows users to post content from many different sources: video sites, like Youtube, and image sharing sites, like Imgur, are especially popular. Scroll over the visualization below to see how popular certain types of posts are (the bigger the circle the more popular).
+			Reddit allows users to post content from many different sources: video sites, like Youtube, and image sharing sites, like Imgur, are especially popular. Users may also post their own thoughts as text (called a 'selfpost'). Scroll over the visualization below to see how popular certain types of posts are (the bigger the circle the more popular).
 		</p>
 
-		<div style="float: right; margin-right: 50px; width: 400px; position: relative; top: 50px;">
-			<button type="button" class="btn btn-default gobackbtn" style="float: right" aria-label="Left Align">
+		<div class="btn-group" role="group" aria-label="..." style="margin-right: 50px; float: right; position: relative; top: 25px;">
+		  <button type="button" class="btn btn-default domainbtn active" att="numTimesUsed">Total number of front-page occurances</button>
+		  <button type="button" class="btn btn-default domainbtn" att="avgComments">Total number of comments</button>
+		  <button type="button" class="btn btn-default domainbtn" att="avgRank">Average Rank</button>
+		  <button type="button" class="btn btn-default domainbtn" att="avgScore">Average # Upvotes</button>
+		</div>
+		<h3 style="margin-top: 35px; margin-left: 25px;">
+			<em>Showing: </em><strong id="domainKey">Post types</strong>
+		</h3>
+		<div class="resetBTN" style="margin-left: 25px; margin-top: 15px; float: left">
+			<button type="button" class="btn btn-default btn-info gobackbtn" aria-label="Left Align">
 				<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> Reset diagram
 			</button>
-			<h3 style="float: left; margin-top: 7px;">
-				<em>Showing: </em><strong id="domainKey">Post types</strong>
-			</h4>
 		</div>
+		<div class="domainBubbles" style="margin-left: 160px"></div>		
+		<p class="chartCaption">
+			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> It is clear that images, webpages and selfposts make it to the front page more than videos, but in terms of number of comments, images lag behind all the others. When we dig down into each type of post we see more polarizing splits in which sources these images, videos, wepages and selfposts come from.
+		</p>
 
-		<div class="domainBubbles"></div>
+		<hr /><h2>Does a post's title length make a difference?</h2>
+		<p>
+			Reddit users are free to choose any title they want to represent their post. Post titles range from short one word adjectives, to longer, multi-sentence descriptions. But how exactly does the length of a title affect how well it does in terms of popularity?
+		</p><br />
+
+		<div class="titleChart"></div>
+		<p class="chartCaption">
+			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> Lorem ipsum
+		</p>
 
 	</div>
 	
