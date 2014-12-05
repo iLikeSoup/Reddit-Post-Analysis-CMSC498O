@@ -85,3 +85,17 @@ p{
 .tooltip-inner {
     white-space:pre-wrap !important;
 }
+
+.notebookSection{
+	margin-left: 20px;
+	margin-bottom: 30px;
+}
+
+.notebookSection h4{
+	font-size: 16pt;
+	margin-bottom: 5px !important;
+}
+
+.notebookSection hr{
+	margin-top: 0 !important;
+}

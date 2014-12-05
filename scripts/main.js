@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
 	$('.titleChart').tooltip({
     	'selector': 'rect',
     	'container': 'body',
@@ -10,6 +11,13 @@ $(document).ready(function(){
     	'container': 'body',
     	'placement': 'top'
 	});
+
+	$('.domainBubbles').tooltip({
+    	'selector': 'g.node',
+    	'container': 'body',
+    	'placement': 'top'
+	});
+
 });
 
 function getSVGHeight(){

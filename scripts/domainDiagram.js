@@ -4,7 +4,7 @@ $(document).ready(function(){
 	var diameter = getSVGHeight();
 	var format = d3.format(",d");
 	var color = d3.scale.category10();
-	var duration = 600;
+	var duration = 500;
 	var delay = 0;
 	var toggleAttr = "numTimesUsed";
 	var currentTree = {}; //Keep track of the current dataset being used in the visualization
@@ -57,15 +57,15 @@ $(document).ready(function(){
 			.append("g")
 			.attr("class","node")
 			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
-			.append("titlelabel")
-			.text(function(d) { return d.name + "\n " + format(d.value); });
+			.append("title")
+			.text(function(d) { return d.name + "\n " + format(d.value); })
+			//.attr("title", function(d){ return d.name });
 
-		node.append("titlelabel")
+		node.append("title")
 			.text(function(d) { return d.name + "\n " + format(d.value); });
 
 		node.append("circle")
 			.attr("r", function(d) { return d.r; })
-			.attr("title", function(d) { return d.name + " : " + d.value; })
 			.style("fill", function(d) { return color(d.group); })
 			.on("click", function(d) { // Onclick redraw the bubbles
 		        console.log(d.child)
@@ -116,12 +116,13 @@ $(document).ready(function(){
 			.append("g")
 			.attr("class","node")
 			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+			//.attr("title", function(d){ return d.name });
 
-			nodeEnter.append("titlelabel")
+			nodeEnter.append("title")
 				.text(function(d) { return d.name + "\n " + format(d.value); });
 
 			nodeEnter.append("circle")
-				.attr("title", function(d) { return d.name + " : " + d.value; })
+				//.attr("title", function(d) { return d.name + " : " + d.value; })
 				.attr("r", function(d) { return d.r; })
 				.style("fill", function(d) { return color(d.group); })
 
@@ -139,7 +140,6 @@ $(document).ready(function(){
 
 		node.select("circle")
 	        .transition().duration(1000)
-	        .attr("title", function(d) { return d.name + " : " + d.value; })
 	        .attr("r", function (d) { return d.r; })
 
 	    node.select("text")

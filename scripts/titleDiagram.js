@@ -57,7 +57,7 @@ $(document).ready(function(){
 		      .attr("width", x.rangeBand())
 		      .attr("y", function(d) { return y(d.avgRank); })
 		      .attr("height", function(d) { return height - y(d.avgRank); })
-		      .attr("title", function(d) { return "#Characters: " + d.numChars + ", \n avgRank: " + d.avgRank; });
+		      .attr("title", function(d) { return "#Characters: " + d.numChars/* + ", \n avgRank: " + d.avgRank*/; });
 
 		//Listener for the toggle button click
 		$(".titlebtn").click(function(){
@@ -86,7 +86,7 @@ $(document).ready(function(){
 				.duration(1000)
 				.attr("y", function(d) { return y(d[yattribute]); })
 			    .attr("height", function(d) { return height - y(d[yattribute]); })
-			    .attr("title", function(d) { return "#Characters: " + d.numChars + ", \n" + d[yattribute] + ": " + d[yattribute]; });
+			    .attr("title", function(d) { return "#Characters: " + d.numChars/* + ", \n" + d[yattribute] + ": " + d[yattribute]*/; });
 		}
 
 	});
