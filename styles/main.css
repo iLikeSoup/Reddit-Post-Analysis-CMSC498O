@@ -73,3 +73,15 @@ p{
 .resetBTN{
 	display: none;
 }
+
+.titleChart .bar, .rankChart .bar{
+	cursor: pointer;
+}
+
+.titleChart .bar:hover, .rankChart .bar:hover{
+  fill: #BA3F00;
+}
+
+.tooltip-inner {
+    white-space:pre-wrap !important;
+}

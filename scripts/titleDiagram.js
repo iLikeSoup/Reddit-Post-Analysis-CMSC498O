@@ -1,10 +1,10 @@
 $(document).ready(function(){
 
-	var margin = {top: 0, right: 10, bottom: 30, left: 40};
-	var width = $(".rankChart").width();
+	var margin = {top: 0, right: 0, bottom: 30, left: 30};
+	var width = $(".titleChart").width();
 	var height = getSVGHeight()/2 - margin.top - margin.bottom;
 
-	var x = d3.scale.ordinal().rangeRoundBands([0, width], .1);
+	var x = d3.scale.ordinal().rangeRoundBands([0, width]);
 
 	var y = d3.scale.linear().range([height, 0]);
 
@@ -12,16 +12,23 @@ $(document).ready(function(){
 
 	var yAxis = d3.svg.axis().scale(y).orient("left");
 
-	var svg = d3.select(".rankChart").append("svg")
+	var svg = d3.select(".titleChart").append("svg")
 	    .attr("width", width + margin.left + margin.right)
 	    .attr("height", height + margin.top + margin.bottom)
 		  	.append("g")
 		    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-	d3.csv("datasets/rank.csv", type, function(error, data) {
+	// numChars,avgScore,numWords,avgComments,avgRank
+	d3.csv("datasets/title.csv", type, function(error, data) {
 
-		x.domain(data.map(function(d) { return d.rank; }));
-		y.domain([0, d3.max(data, function(d) { return d.avgUpvotes; })]);
+		console.log(data);
+
+		data.sort(function(a,b){
+			return parseInt(a.numChars) - parseInt(b.numChars)
+		});
+
+		x.domain(data.map(function(d) { return d.numChars; }));
+		y.domain([0, d3.max(data, function(d) { return d.avgRank; })]);
 
 		svg.append("g")
 		  .attr("class", "x axis")
@@ -41,27 +48,36 @@ $(document).ready(function(){
 		      .attr("y", 6)
 		      .attr("dy", ".9em")
 		      .style("text-anchor", "end");
-		      //.text("Average # of upvotes");
 
 		svg.selectAll(".bar")
 		  .data(data)
 		    .enter().append("rect")
 		      .attr("class", "bar")
-		      .attr("x", function(d) { return x(d.rank); })
+		      .attr("x", function(d) { return x(d.numChars); })
 		      .attr("width", x.rangeBand())
-		      .attr("y", function(d) { return y(d.avgUpvotes); })
-		      .attr("height", function(d) { return height - y(d.avgUpvotes); })
-		      .attr("title", function(d) { return "Post rank: " + d.rank + ", \n avgUpvotes: " + d.avgUpvotes; });;
+		      .attr("y", function(d) { return y(d.avgRank); })
+		      .attr("height", function(d) { return height - y(d.avgRank); })
+		      .attr("title", function(d) { return "#Characters: " + d.numChars + ", \n avgRank: " + d.avgRank; });
 
 		//Listener for the toggle button click
-		$(".rtbtn").click(function(){
+		$(".titlebtn").click(function(){
 			$(this).addClass("active").siblings().removeClass("active");
-			$(".rtKey #rtytext").text($(this).attr("ylabel"));
+			$(".titleKey #titleytext").text($(this).attr("ylabel"));
 			redrawBars($(this).attr("att"));
 
 		});
 
 		function redrawBars(yattribute){
+
+			y.domain([0, d3.max(data, function(d) { return d[yattribute]; })]);
+
+			svg.selectAll("g.y.axis")
+			  .call(yAxis)
+			    .append("text")
+			      .attr("transform", "rotate(-90)")
+			      .attr("y", 6)
+			      .attr("dy", ".9em")
+			      .style("text-anchor", "end");
 
 			// Redraw the height of the bars
 			svg.selectAll("rect")
@@ -70,7 +86,7 @@ $(document).ready(function(){
 				.duration(1000)
 				.attr("y", function(d) { return y(d[yattribute]); })
 			    .attr("height", function(d) { return height - y(d[yattribute]); })
-			    .attr("title", function(d) { return "Post rank: " + d.rank + ", \n " + d[yattribute] + ": " + d[yattribute]; });
+			    .attr("title", function(d) { return "#Characters: " + d.numChars + ", \n" + d[yattribute] + ": " + d[yattribute]; });
 		}
 
 	});

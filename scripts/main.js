@@ -1,9 +1,15 @@
 $(document).ready(function(){
-	/*$('body').tooltip({
-    	'selector': 'circle',
+	$('.titleChart').tooltip({
+    	'selector': 'rect',
     	'container': 'body',
     	'placement': 'top'
-	});*/
+	});
+
+	$('.rankChart').tooltip({
+    	'selector': 'rect',
+    	'container': 'body',
+    	'placement': 'top'
+	});
 });
 
 function getSVGHeight(){

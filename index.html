@@ -22,6 +22,7 @@
 	<script src="scripts/domainDiagram.js" charset="utf-8"></script>
 	<script src="scripts/subredditDiagram.js" charset="utf-8"></script>
 	<script src="scripts/rankDiagram.js" charset="utf-8"></script>
+	<script src="scripts/titleDiagram.js" charset="utf-8"></script>
 
 	<link href='http://fonts.googleapis.com/css?family=Raleway:400,500,700' rel='stylesheet' type='text/css'>
 
@@ -149,9 +150,9 @@
 		<p>
 			The posts that made it to the front page were viewed more and upvoted more than any of the thousands (even tens and hundreds of thousands) of posts submitted on any given day. Reddit's ranking algorithm combines a "freshness" weight, along with the number of upvotes to calculate the overall rank of a post.
 		</p>
-				<div class="rtKey" style="float:right; width: 500px; position: relative; top: 50px; z-index: 50">
-					<strong>X Axis</strong>: Post rank <br /><strong>Y Axis</strong>: Average number of <span id="rtytext">upvotes</span> received
-				</div>
+			<div class="rtKey" style="float:right; width: 500px; position: relative; top: 50px; z-index: 50">
+				<strong>X Axis</strong>: Post rank <br /><strong>Y Axis</strong>: Average number of <span id="rtytext">upvotes</span> received
+			</div>
 			<div class="btn-group" role="group" aria-label="..." style="float: right; margin-right: 20px; position: relative; top: 50px; z-index: 50">
 				  <button type="button" class="btn btn-default rtbtn active" att="avgUpvotes" ylabel="upvotes" >Average upvotes</button>
 				  <button type="button" class="btn btn-default rtbtn" att="avgComments" ylabel="comments" >Average # comments</button>
@@ -208,12 +209,21 @@
 
 		<hr /><h2>Does a post's title length make a difference?</h2>
 		<p>
-			Reddit users are free to choose any title they want to represent their post. Post titles range from short one word adjectives, to longer, multi-sentence descriptions. But how exactly does the length of a title affect how well it does in terms of popularity?
+			Reddit users are free to choose any title they want to represent their post. Post titles range from short one word adjectives, to longer, multi-sentence descriptions. But how exactly does the length of a title effect how well it does in terms of popularity?
 		</p><br />
+
+		<div class="titleKey" style="float:right; width: 500px; position: relative; top: 0px; z-index: 50">
+			<strong>X Axis</strong>: Post rank <br /><strong>Y Axis</strong>: Average <span id="titleytext">number of upvotes</span> received
+		</div>
+		<div class="btn-group" role="group" aria-label="..." style="float: right; margin-right: 20px; position: relative; top: 0px; z-index: 50">
+			  <button type="button" class="btn btn-default titlebtn active" att="avgRank" ylabel="rank" >Average rank</button>
+			  <button type="button" class="btn btn-default titlebtn" att="avgUpvotes" ylabel="number of upvotes" >Average upvotes</button>
+			  <button type="button" class="btn btn-default titlebtn" att="avgComments" ylabel="number of comments" >Average comments</button>
+		</div>
 
 		<div class="titleChart"></div>
 		<p class="chartCaption">
-			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> Lorem ipsum
+			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> There doesn't seem to be any correlation between title length and average rank, average upvotes or average number of comments
 		</p>
 
 	</div>
