@@ -45,18 +45,18 @@
 
 		<div class="headerText"><strong>Introduction.</strong></div> 
 		<p style="font-size: 22px;">
-			Reddit is a website where a huge community of users submit content and vote (i.e. upvote or downvote) on others' submitted content. The premise of this is simple; the top 25 or so <u>front-page</u> posts change hourly thanks to the active community. There are smaller communities, or <u>subreddits</u>, within the Reddit website where users with similar interests can post/vote on content related to a specific category. With our project, we wanted to delve into the posts that make it to the front-page and see what types of patterns we could deduce from front-page post data.
+			Reddit is a website where a huge community of users submit content and vote (i.e. upvote or downvote) on others' submitted content. The premise of this is simple; the top 25 or so <u>front page</u> posts change hourly thanks to the active community. There are smaller communities, or <u>subreddits</u>, within the Reddit website where users with similar interests can post/vote on content related to a specific category. With our project, we wanted to delve into the posts that make it to the front page and see what types of patterns we could deduce from front page post data.
 		</p>
 
 		<hr /><div class="headerText"><a name="dataGathAndWr"><strong>Data Gathering and Wrangling</strong></a></div>
 			<p>
-				The data gathering and wrangling process was made up of 3 parts: a Python script, a cron job, and shell scripts. We used the Python script and cron job to obtain the <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/tree/master/pulls/dataset">data</a>, then formatted it into 
+				The data gathering and wrangling process was made up of 3 parts: a Python script, a cron job, and shell scripts. We used the Python script and the cron job to obtain the <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/tree/master/pulls/dataset">data</a>, then formatted it into 
 				.csv files</a> and used the shell scripts to clean it for analysis.
 			</p>
 
 			<h3><strong>Python script</strong></h3>
 			<p>
-				The <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/blob/master/pullreddit.py">Python script</a> we wrote required a parser to comb through the raw html text that we scraped. We used the <a href="https://pypi.python.org/pypi/lxml/3.4.0">lxml</a> module to satisfy this need. It provided us with several library functions that made extracting the information we desired much easier. We used the built-in Python urllib2 library to perform the actual scraping, and used a GET parameter in the <a href="http://www.reddit.com?limit=100">URL</a> to grab the top 100 posts. The data was then aggregated and formatted into a .csv file.
+				The <a href="https://github.com/JackLot/Reddit-Post-Analysis-CMSC498O/blob/master/pullreddit.py">Python script</a> we wrote required a parser to comb through the raw html text that we scraped. We used the lxml module to satisfy this need. It provided us with several library functions that made extracting the information we desired much easier. We used the built-in Python urllib2 library to perform the actual scraping, and used a GET parameter in the <a href="http://www.reddit.com?limit=100">URL</a> to grab the top 100 posts. The data was then aggregated and formatted into a .csv file.
 			</p>
 
 			<h3><strong>Cron job</strong></h3>
@@ -72,7 +72,7 @@
 
 		<hr /><div class="headerText"><a name="dataAnalysis"<strong>Data Analysis with Python and Pandas</strong></a></div>
 		<p>
-			In order to perform data analysis on the data that we scraped from Reddit, we used <a href="http://nbviewer.ipython.org/github/iLikeSoup/Reddit-Post-Analysis-CMSC498O/blob/master/pulls/dataset/CMSC498O%20Final%20Project.ipynb">IPython</a> for our language and environment. For libraries we used Pandas and NumPy to perform the bulk of our analysis. 
+			In order to perform data analysis on the data that we scraped from Reddit, we used <a href="http://nbviewer.ipython.org/github/iLikeSoup/Reddit-Post-Analysis-CMSC498O/blob/master/pulls/dataset/CMSC498O%20Final%20Project.ipynb">IPython</a> for our language and environment. We used the Pandas and NumPy libraries to perform the bulk of our analysis. 
 		</p>
 		<p>
 			 Our basic mentality was to identify patterns and try to find if some characteristic in the data caused a spike in popularity (whether that popularity was measured in the ranking of the posts, the scores of the posts, the number of comments on the posts, or something else). To do this, we had to iterate over all the data we scraped and keep track of various pieces of information associated with the category that we were focusing on.
@@ -93,10 +93,10 @@
 
 		<h3><strong>What tools were most important?</strong></h3>
 		<p>
-			A DataFrame is an easy and intuitive way to represent a table. All of the data analysis we performed involved using DataFrames. An especially powerful feature that DataFrames inherit from NumPy is the ability to perform boolean indexing. This allows us to query for posts with specific properties in a succint manner. For example, suppose that we wanted to find all posts that had a top 10 ranking. If the name of our DataFrame is df, this is the command we would need to use: df[df['rank'] <= 10].
+			A DataFrame is an easy and intuitive way to represent a table. All of the data analysis we performed involved using DataFrames. An especially powerful feature that DataFrames inherit from NumPy is the ability to perform boolean indexing. This allows us to query for posts with specific properties in a succint manner. For example, suppose that we wanted to find all posts that had a top 10 ranking. If the name of our DataFrame is df, this is the command we would need to use: <font face="courier">df[df['rank'] <= 10]</font>.
 		</p>
 		<p>
-			Two other important tools that we used were regular expressions and heaps. Regular expressions, or regex for short, is used for pattern matching in strings of characters. An example of what we used regex for in our project was to identify the type of content that a post linked to. E.g., we searched for posts with the strings ".png" or ".jpg" to identify what posts were of images. The heap is a common data structure in computer science that is used to order data based on max or min values. We used heaps to sort the content of many of our tables. For instance, to identify which subreddits had the most comments, we inserted the subreddit and its corresponding number of comments into a heap in order to sort it in ascending order with the subreddit with the highest number of comments on top.
+			Two other important tools that we used were regular expressions and heaps. Regular expressions, or regex for short, is used for pattern matching in strings of characters. An example of what we used regex for in our project was to identify the type of content that a post linked to. E.g., we searched for posts with the strings ".png" or ".jpg" to identify what posts were of images. The heap is a common data structure in computer science that is used to order data based on max or min values. We used heaps to sort the content of many of our tables. For instance, to identify which subreddits had the most comments, we inserted the subreddit and its corresponding number of comments into a heap in order to sort it in ascending order with the subreddit that had the highest number of comments on top.
 		</p>
 
 		<h3><strong>IPython Walkthrough</strong></h3>
@@ -106,7 +106,7 @@
 		<h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Scores</h4><hr />
 		<img src="images/scoresTable.PNG" alt="Scores Table" style="float: left" width=170 height=220>
 		<p>
-			We primarily used boolean indexing to calculate the table of scores. We decided to group the indices in the thousands range (0-999, 1000-1999, etc...) in order to present the data in a clear and concise fashion. Since we already had our dataset present, we knew that no post achieved a score of 6000 or higher. Therefore it was simple to find the posts with a score >= 5000. The other range of scores proved to be more tricky. Initially we thought that we could use conjuction and disjunction within the boolean indexing, but the semantics of the operation did not turn out as we anticipated. We found a work-around by applying another tier of boolean indexing to the data. For example, to find the posts with a score that fit the criteria of 4000 <= score < 5000, we first found all the posts that had a score >= 4000 and stored those posts in a DataFrame. Then we applied the second tier of boolean indexing to that DataFrame and found all the posts (in the set of posts with score >= 4000) that had a score < 5000.
+			We primarily used boolean indexing to calculate the table of scores. We decided to group the indices in the thousands range (0-999, 1000-1999, etc...) in order to present the data in a clear and concise fashion. Since we already had our dataset present, we knew that no post achieved a score of 6000 or higher. Therefore it was simple to find the posts with a score >= 5000. The other ranges proved to be more tricky. Initially, we thought that we could use conjuction and disjunction within the boolean indexing, but the semantics of the operation did not turn out as we anticipated. We found a work-around by applying another tier of boolean indexing to the data. For example, to find the posts with a score that fit the criteria of 4000 <= score < 5000, we first found all the posts that had a score >= 4000 and stored those posts in a DataFrame. Then we applied the second tier of boolean indexing to that DataFrame and found all the posts (in the set of posts with score >= 4000) that had a score < 5000.
 		</p></div>
 
 		<div class="notebookSection"><a href="#rankV" class="viewV" style="float:right">(View visualization)</a>
@@ -123,7 +123,7 @@
 			This table was meant to show the relationship between the content type and the domain referenced in the post, along with the associated score, rank, and number of comments. The domain is derived from the URL that the Reddit post links to for its content. We began by storing the data in a dictionary, with the key being the domain name and the values being a list that was composed of the count (the number of times a domain was used in the dataset, so we could calculate averages), the aggregated score, rank, and number of comments, and the content type associated with that particular domain. In order to identify the content type, we had to perform regex on the URL that the Reddit post linked to. The regex we used involved named groups. Basically, we pre-compiled a regex pattern for each of the 4 content types that we were categorizing (images, webpages, Reddit posts, and videos). Each pattern was put in a named group to make it easy to identify which regex produced a match. Then we ran the dataset against each of the patterns, keeping track of when a match occurred and storing the data accordingly.
 		</p>
 		<p>
-			The sorting of this table was tricky as well. We had to utilize both primary and secondary sorting in the heap to order the table appropriately. The way that Python's heapq performs this sorting is by passing in a tuple when inserting into the heap. We passed in an integer that mapped to each content type in a dictionary as the first element in the tuple, the number of occurrences associated with the domain as the second element in the tuple, and the domain name as the final element (this final element was needed more so that the appropriate data could be accessed later in the code than for sorting). After that we aggregated the data to line up together in a parallel fashion across several different lists, and then aggreated those lists into a dictionary that could be passed in as input to create the DataFrame that represented the finalized product.
+			The sorting of this table was tricky as well. We had to utilize both primary and secondary sorting in the heap to order the table appropriately. The way that Python's heapq performs this sorting is by passing in a tuple when inserting into the heap. We passed in an integer that mapped to each content type in a dictionary as the first element in the tuple, the number of occurrences associated with the domain as the second element in the tuple, and the domain name as the final element (this final element was needed more so that the appropriate data could be accessed later in the code than for sorting). After that, we aggregated the data to line up together in a parallel fashion across several different lists, and then stored those lists into a dictionary that could be passed in as input to create the DataFrame that represented the finalized product.
 		</p></div>
 
 		<div class="notebookSection"><a href="#subredditV" class="viewV" style="float:right">(View visualization)</a>
@@ -139,13 +139,13 @@
 		<h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Length of Title</h4><hr />
 		<table><tr><td valign="top"><img src="images/titleTable.PNG" alt="Title Length Table" width=700 height=480></td><td valign="top">
 		<p>
-			Does the length of a title have an impact on how popular a post on Reddit is? That was what we were wondering when we created this table. It invovled all the standard mechanisms from before (dictionaries, heaps, regex, etc...). The one additional column of data that was required was the number of words in the title. We calculated it by using regex to count the number of spaces in the title, and then adding one to that value (because 2 words will have 1 space in between them, 3 words have 2 spaces in total, etc...).
+			Does the length of a title have an impact on how popular a post on Reddit is? That was what we were wondering when we created this table. It invovled all the standard mechanisms from before (dictionaries, heaps, regex, etc...). The one additional column of data that was required was the number of words in the title. We calculated it by using regex to count the number of spaces in the title, and then adding one to that value (because 2 words will have 1 space in between them, 3 words have 2 spaces in total, etc...). It initially appeared that there might have been a correlation in the data, but after producing the visualization we determined that there wasn't one.
 		</p></td></tr></table></div>
 
 		<div class="notebookSection"><h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Length of Username</h4><hr />
 		<table><tr><td valign="top"><img src="images/usernameTable.PNG" alt="Username Length Table" width=450 height=350></td><td valign="top">
 		<p>
-			Borrowing the concept from the previous table, we wondered if the length of the username had an impact on how popular a post on Reddit was. We used all the tools from before to produce this dataset. With it, we had created a table for each of the main categories from the datasets that we scraped from Reddit: scores, rankings, domains and content, subreddit categories, the title, and the username. We ended up producing visualizations for each of the tables except for this one because we couldn't derive any patterns from this dataset (i.e., there is no correlation between length of the username and popularity).
+			Borrowing the concept from the previous table, we wondered if the length of the username had an impact on how popular a post on Reddit was. We used all the tools from before to produce this dataset. With it, we had created a table for each of the main categories from the datasets that we scraped from Reddit: scores, rankings, domains and content, subreddit categories, the title, and the username. This ended up being the only dataset that we did not produce a visualization for because we couldn't derive any patterns from this dataset by looking at the table (i.e., there is no correlation between length of the username and popularity).
 		</p></td></tr></table></div>
 
 
@@ -160,11 +160,11 @@
 
 		<a name="scoresV"></a><h2>Distribution of post rankings</h2>
 		<p>
-			The front-page posts are the best-of-the-best of reddit, as voted on by users. We saw most of the posts fall between 2K - 3K votes (aka. upvotes) but sometimes posts even had as many as 4 or 5K! So just how common were those kinds of numbers?
+			The front page posts are the best-of-the-best of reddit, as voted on by users. We saw most of the posts fall between 2000 - 3000 votes (aka. upvotes) but sometimes posts even had as many as 4000 or 5000! So just how common were those kinds of numbers?
 		</p>
 		<div class="scoresChart"></div>
 		<p class="chartCaption">
-			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> There is not a standard bell type curve that one might expect; however we confirmed our earlier suspicion that getting 4000+ upvotes is much less common than getting only 1 or 2 thousand. Very few even make it to 5000+!
+			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> There is not a standard bell type curve that one might expect; however we confirmed our earlier suspicion that getting 4000+ upvotes is much less common than getting only 1000 or 2000. Very few even make it to 5000+!
 		</p>
 
 
@@ -181,10 +181,10 @@
 			</div>
 		<div class="rankChart"></div>
 		<p class="chartCaption">
-			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> As you can see by toggling the bar chart options (above), the number of comments received by posts don't seem to follow any pattern. However, the average number of upvotes received does seem to follow a linearly decreasing pattern (at least for the first 50 or so posts). Additionally, front-page posts receive much less comments than upvotes, meaning users are more apt to upvote a post but not comment on it.
+			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> As you can see by toggling the bar chart options (above), the number of comments received by posts don't seem to follow any pattern. However, the average number of upvotes received does seem to follow a linearly decreasing pattern (at least for the first 50 or so posts). Additionally, front page posts receive many less comments than upvotes, meaning users are more apt to upvote a post but not comment on it.
 		</p>
 		<p>
-			Posts that make it to the front-page usually have many thousands of upvotes (sometimes as high as 5000) but Reddit's algorithm also accounts for a timeliness factor. The density of votes leading up to the present time also means a post may make it to the front page. Of all the front page posts, just how many make it to 3, 4 or even 5K upvotes? And do the majority of front page posts even need that many to make it there in the first place?
+			Posts that make it to the front page usually have many thousands of upvotes (sometimes as high as 5000) but Reddit's algorithm also accounts for a timeliness factor. The density of votes leading up to the present time also means a post may make it to the front page. Of all the front page posts, just how many make it to 3000, 4000 or even 5000 upvotes? And do the majority of front page posts even need that many to make it there in the first place?
 		</p>
 		<div class="diagram4"></div>
 
@@ -208,13 +208,13 @@
 
 
 
-		<hr /><a name="domainV"></a><h2>What kinds of posts are reddit users most interested in?</h2>
+		<hr /><a name="domainV"></a><h2>What kinds of posts are Reddit users most interested in?</h2>
 		<p>
 			Reddit allows users to post content from many different sources. Video sites, like Youtube, and image sharing sites, like Imgur, are especially popular. Users may also post their own thoughts as text (called a 'selfpost'). Click on the visualization below to see how popular certain types of posts are (the bigger the circle, the more popular its content is).
 		</p>
 
 		<div class="btn-group" role="group" aria-label="..." style="margin-right: 50px; float: right; position: relative; top: 25px;">
-		  <button type="button" class="btn btn-default domainbtn active" att="numTimesUsed">Total number of front-page occurances</button>
+		  <button type="button" class="btn btn-default domainbtn active" att="numTimesUsed">Total number of front page occurances</button>
 		  <button type="button" class="btn btn-default domainbtn" att="avgComments">Total number of comments</button>
 		  <button type="button" class="btn btn-default domainbtn" att="avgRank">Average Rank</button>
 		  <button type="button" class="btn btn-default domainbtn" att="avgScore">Average # Upvotes</button>
@@ -236,7 +236,7 @@
 
 		<hr /><a name="titleV"></a><h2>Does a post's title length make a difference?</h2>
 		<p>
-			Reddit users are free to choose any title they want to represent their post. Post titles range from short one word adjectives, to longer, multi-sentence descriptions. But how exactly does the length of a title effect how well it does in terms of popularity?
+			Reddit users are free to choose any title they want to for their post. Post titles range from short, one word adjectives, to longer, multi-sentence descriptions. But how exactly does the length of a title affect how well it does in terms of popularity?
 		</p><br />
 
 		<div class="titleKey" style="float:right; width: 500px; position: relative; top: 0px; z-index: 50">
