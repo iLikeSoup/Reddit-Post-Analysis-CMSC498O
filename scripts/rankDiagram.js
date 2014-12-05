@@ -50,7 +50,8 @@ $(document).ready(function(){
 		      .attr("x", function(d) { return x(d.rank); })
 		      .attr("width", x.rangeBand())
 		      .attr("y", function(d) { return y(d.avgUpvotes); })
-		      .attr("height", function(d) { return height - y(d.avgUpvotes); });
+		      .attr("height", function(d) { return height - y(d.avgUpvotes); })
+		      .attr("title", function(d) { return "Post rank: " + d.rank + ", \n avgUpvotes: " + d.avgUpvotes; });
 
 		//Listener for the toggle button click
 		$(".rtbtn").click(function(){
@@ -66,9 +67,10 @@ $(document).ready(function(){
 			svg.selectAll("rect")
 				.data(data)
 				.transition()
-				.duration(1000)
-				.attr("y", function(d) { return y(d[yattribute]); })
-			    .attr("height", function(d) { return height - y(d[yattribute]); });
+					.duration(1000)
+					.attr("y", function(d) { return y(d[yattribute]); })
+				    .attr("height", function(d) { return height - y(d[yattribute]); })
+				    .attr("title", function(d) { return "Post rank: " + d.rank + ", \n " + d[yattribute] + ": " + d[yattribute]; });
 		}
 
 	});

@@ -4,8 +4,10 @@ $(document).ready(function(){
 	var diameter = getSVGHeight();
 	var format = d3.format(",d");
 	var color = d3.scale.category10();
-	var duration = 600;
+	var duration = 500;
 	var delay = 0;
+	var toggleAttr = "numTimesUsed";
+	var currentTree = {}; //Keep track of the current dataset being used in the visualization
 
 	var bubble = d3.layout.pack()
 	    .sort(null)
@@ -42,6 +44,7 @@ $(document).ready(function(){
 	d3.csv("datasets/domains.csv", function(error, data) {
 
 		createTrees(data);
+		currentTree = typeRoot;
 
 		// Create initial bubbles representing types of posts
 		var node = svg1
@@ -55,7 +58,8 @@ $(document).ready(function(){
 			.attr("class","node")
 			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
 			.append("title")
-			.text(function(d) { return d.name + "\n " + format(d.value); });
+			.text(function(d) { return d.name + "\n " + format(d.value); })
+			//.attr("title", function(d){ return d.name });
 
 		node.append("title")
 			.text(function(d) { return d.name + "\n " + format(d.value); });
@@ -67,6 +71,7 @@ $(document).ready(function(){
 		        console.log(d.child)
 		        redrawDiagram(d.child);
 		        $("#domainKey").text(d.name.charAt(0).toUpperCase() + d.name.slice(1) + "s");
+		       	$(".resetBTN").show();
 		    });
 
 		node.append("text")
@@ -77,13 +82,30 @@ $(document).ready(function(){
 		$('.gobackbtn').click(function(){
 			redrawDiagram(typeRoot);
 			$("#domainKey").text("Post types");
-		})
+			$(".resetBTN").hide();
+		});
+
+		// Update the bubbles with the selected attribute
+		$(".domainbtn").click(function(){
+			$(this).addClass("active").siblings().removeClass("active");
+			toggleAttr = $(this).attr("att");
+			redrawDiagram(currentTree);
+		});
 
 	});
 
 	// Redraw bubbles with new dataset
 	function redrawDiagram(data)
 	{
+		currentTree = data;
+
+		// Rewrite data to use the correct attribute
+		for (i = 0; i < data.children.length; i++)
+		{
+			var entry = data.children[i];
+			entry.value = Number(entry.original[toggleAttr]);
+		}
+
 		var node = svg1
 			.selectAll(".node")
 			.data(bubble.nodes(data)
@@ -94,13 +116,15 @@ $(document).ready(function(){
 			.append("g")
 			.attr("class","node")
 			.attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; })
+			//.attr("title", function(d){ return d.name });
 
 			nodeEnter.append("title")
 				.text(function(d) { return d.name + "\n " + format(d.value); });
 
 			nodeEnter.append("circle")
+				//.attr("title", function(d) { return d.name + " : " + d.value; })
 				.attr("r", function(d) { return d.r; })
-				.style("fill", function(d) { return color(d.group); });
+				.style("fill", function(d) { return color(d.group); })
 
 			nodeEnter.append("text")
 				.attr("dy", ".3em")

@@ -47,6 +47,10 @@ p{
   fill: #ff5700;
 }
 
+.scoresChart .bar{
+	fill: #ff4500;
+}
+
 .axis text {
   font: 10px sans-serif;
 }
@@ -68,4 +72,38 @@ p{
 
 .domainBubbles circle:hover{
 	cursor: pointer;
+}
+
+.resetBTN{
+	display: none;
+}
+
+.titleChart .bar, .rankChart .bar{
+	cursor: pointer;
+}
+
+.titleChart .bar:hover, .rankChart .bar:hover{
+  fill: #BA3F00;
+}
+
+.tooltip-inner {
+    white-space:pre-wrap !important;
+}
+
+.notebookSection{
+	margin-left: 20px;
+	margin-bottom: 30px;
+}
+
+.notebookSection h4{
+	font-size: 16pt;
+	margin-bottom: 5px !important;
+}
+
+.notebookSection hr{
+	margin-top: 0 !important;
+}
+
+.viewV{
+	font-size: 16px;
 }
