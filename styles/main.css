@@ -47,6 +47,10 @@ p{
   fill: #ff5700;
 }
 
+.scoresChart .bar{
+	fill: #ff4500;
+}
+
 .axis text {
   font: 10px sans-serif;
 }
@@ -98,4 +102,8 @@ p{
 
 .notebookSection hr{
 	margin-top: 0 !important;
+}
+
+.viewV{
+	font-size: 16px;
 }

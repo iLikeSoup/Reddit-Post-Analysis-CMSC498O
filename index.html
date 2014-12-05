@@ -23,6 +23,7 @@
 	<script src="scripts/subredditDiagram.js" charset="utf-8"></script>
 	<script src="scripts/rankDiagram.js" charset="utf-8"></script>
 	<script src="scripts/titleDiagram.js" charset="utf-8"></script>
+	<script src="scripts/scoresDiagram.js" charset="utf-8"></script>
 
 	<link href='http://fonts.googleapis.com/css?family=Raleway:400,500,700' rel='stylesheet' type='text/css'>
 
@@ -101,19 +102,22 @@
 		<h3><strong>IPython Walkthrough</strong></h3>
 		<p>Note: to access the IPython notebook click <a href="http://nbviewer.ipython.org/github/iLikeSoup/Reddit-Post-Analysis-CMSC498O/blob/master/pulls/dataset/CMSC498O%20Final%20Project.ipynb">here</a></p>
 
-		<div class="notebookSection"><h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Scores</h4><hr />
+		<div class="notebookSection"><a href="#scoresV" class="viewV" style="float:right">(View visualization)</a>
+		<h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Scores</h4><hr />
 		<img src="images/scoresTable.PNG" alt="Scores Table" style="float: left" width=170 height=220>
 		<p>
 			We primarily used boolean indexing to calculate the table of scores. We decided to group the indices in the thousands range (0-999, 1000-1999, etc...) in order to present the data in a clear and concise fashion. Since we already had our dataset present, we knew that no post achieved a score of 6000 or higher. Therefore it was simple to find the posts with a score >= 5000. The other range of scores proved to be more tricky. Initially we thought that we could use conjuction and disjunction within the boolean indexing, but the semantics of the operation did not turn out as we anticipated. We found a work-around by applying another tier of boolean indexing to the data. For example, to find the posts with a score that fit the criteria of 4000 <= score < 5000, we first found all the posts that had a score >= 4000 and stored those posts in a DataFrame. Then we applied the second tier of boolean indexing to that DataFrame and found all the posts (in the set of posts with score >= 4000) that had a score < 5000.
 		</p></div>
 
-		<div class="notebookSection"><h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Rank</h4><hr />
+		<div class="notebookSection"><a href="#rankV" class="viewV" style="float:right">(View visualization)</a>
+		<h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Rank</h4><hr />
 		<table><tr><td valign="top"><img src="images/rankTable.PNG" alt="Rank Table" width=325 height=375></td><td valign="top">
 		<p>
 			This motivation behind this table was to see how the rank of a post affected the number of comments and the score associated with the post. We used boolean indexing to aggregate the top 100 ranks of the Reddit posts. As our datasets only included the top 100 posts of each day, it was a little unnecessary to use boolean indexing for this. Originally we were only going to find the posts of the top 10 ranks of the Reddit posts, but decided to expand to the entire dataset after seeing the capabilities of <a href="#d3header">D3.js</a>. The simplest way of adapting the code was to adjust the boolean indexing parameters from rank <= 10 to rank <= 100. We then stored each rank in a list to be used as indices in the table. After that, we iterated through the posts and kept track of the number of comments and the score for each.
 		</p></td></tr></table></div>
 
-		<div class="notebookSection"><h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Domain</h4><hr />
+		<div class="notebookSection"><a href="#domainV" class="viewV" style="float:right">(View visualization)</a>
+		<h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Domain</h4><hr />
 		<img src="images/domainTable.PNG" alt="Domain Table" width=1000 height=400>
 		<p>
 			This table was meant to show the relationship between the content type and the domain referenced in the post, along with the associated score, rank, and number of comments. The domain is derived from the URL that the Reddit post links to for its content. We began by storing the data in a dictionary, with the key being the domain name and the values being a list that was composed of the count (the number of times a domain was used in the dataset, so we could calculate averages), the aggregated score, rank, and number of comments, and the content type associated with that particular domain. In order to identify the content type, we had to perform regex on the URL that the Reddit post linked to. The regex we used involved named groups. Basically, we pre-compiled a regex pattern for each of the 4 content types that we were categorizing (images, webpages, Reddit posts, and videos). Each pattern was put in a named group to make it easy to identify which regex produced a match. Then we ran the dataset against each of the patterns, keeping track of when a match occurred and storing the data accordingly.
@@ -122,13 +126,17 @@
 			The sorting of this table was tricky as well. We had to utilize both primary and secondary sorting in the heap to order the table appropriately. The way that Python's heapq performs this sorting is by passing in a tuple when inserting into the heap. We passed in an integer that mapped to each content type in a dictionary as the first element in the tuple, the number of occurrences associated with the domain as the second element in the tuple, and the domain name as the final element (this final element was needed more so that the appropriate data could be accessed later in the code than for sorting). After that we aggregated the data to line up together in a parallel fashion across several different lists, and then aggreated those lists into a dictionary that could be passed in as input to create the DataFrame that represented the finalized product.
 		</p></div>
 
-		<div class="notebookSection"><h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Subreddit</h4><hr />
+		<div class="notebookSection"><a href="#subredditV" class="viewV" style="float:right">(View visualization)</a>
+		<h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Subreddit</h4><hr />
 		<table><tr><td valign="top"><img src="images/subredditTable.PNG" alt="Subreddit Table" width=580 height=375></td><td>
 		<p>
 			For this table we displayed the subreddits with the highest number of comments. This particular dataset required some of the data to be cleaned within the Python code. The reason that this wasn't handled in the <a href="#dataGathAndWr">Data Wrangling and Gathering</a> portion of the project was because it was a lot simpler to handle the cleaning that we needed to do in Python than to do it with the Unix tools. Some of the subreddits didn't have /r/ preprended in front of it, so it was a simple matter to add it in the Python code while iterating over the subreddit column. Doing it with the Unix tools would have been more complex because the regex would not have been isolated by column and would have produced false positives among the other columns of data. The actual data analytics for this table didn't require anything new from what the previous tables required. It involved iterating through the data while keeping track of subreddits and the associated number of comments, rank, score, and number of occurrences. We used a heap to sort the data based on highest number of comments, and then plugged all the data into a DataFrame.
 		</p></td></tr></table></div>
 
-		<div class="notebookSection"><h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Length of Title</h4><hr />
+
+
+		<div class="notebookSection"><a href="#titleV" class="viewV" style="float:right">(View visualization)</a>
+		<h4><span class="glyphicon glyphicon-th-list" style="font-size: 14pt"></span> Length of Title</h4><hr />
 		<table><tr><td valign="top"><img src="images/titleTable.PNG" alt="Title Length Table" width=700 height=480></td><td valign="top">
 		<p>
 			Does the length of a title have an impact on how popular a post on Reddit is? That was what we were wondering when we created this table. It invovled all the standard mechanisms from before (dictionaries, heaps, regex, etc...). The one additional column of data that was required was the number of words in the title. We calculated it by using regex to count the number of spaces in the title, and then adding one to that value (because 2 words will have 1 space in between them, 3 words have 2 spaces in total, etc...).
@@ -149,7 +157,18 @@
 			<span class="glyphicon glyphicon-folder-close" aria-hidden="true"></span> View D3 visualizations source code
 		</button></a></div>
 
-		<h2>What constitutes a front page post?</h2>
+
+		<a name="scoresV"></a><h2>Distribution of post rankings</h2>
+		<p>
+			The front-page posts are the best-of-the-best of reddit, as voted on by users. We saw most of the posts fall between 2K - 3K votes (aka. upvotes) but sometimes posts even had as many as 4 or 5K! So just how common were those kinds of numbers?
+		</p>
+		<div class="scoresChart"></div>
+		<p class="chartCaption">
+			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> There is not a standard bell type curve that one might expect; however we confirmed our earlier suspicion that getting 4000+ upvotes is much less common than getting only 1 or 2 thousand. Very few even make it to 5000+!
+		</p>
+
+
+		<hr /><a name="rankV"></a><h2>What constitutes a front page post?</h2>
 		<p>
 			The posts that made it to the front page were viewed more and upvoted more than any of the thousands (even tens and hundreds of thousands) of posts submitted on any given day. Reddit's ranking algorithm combines a "freshness" weight, along with the number of upvotes to calculate the overall rank of a post.
 		</p>
@@ -160,7 +179,6 @@
 				  <button type="button" class="btn btn-default rtbtn active" att="avgUpvotes" ylabel="upvotes" >Average upvotes</button>
 				  <button type="button" class="btn btn-default rtbtn" att="avgComments" ylabel="comments" >Average # comments</button>
 			</div>
-
 		<div class="rankChart"></div>
 		<p class="chartCaption">
 			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> As you can see by toggling the bar chart options (above), the number of comments received by posts don't seem to follow any pattern. However, the average number of upvotes received does seem to follow a linearly decreasing pattern (at least for the first 50 or so posts). Additionally, front-page posts receive much less comments than upvotes, meaning users are more apt to upvote a post but not comment on it.
@@ -170,7 +188,9 @@
 		</p>
 		<div class="diagram4"></div>
 
-		<hr /><h2>Subreddit Popularity</h2>
+
+
+		<hr /><a name="subredditV"></a><h2>Subreddit Popularity</h2>
 		<p>
 			Subreddits allow Reddit users to group their posts by category and subject matter, but just how popular are some subreddits? Toggle through the popularity measures below to see how the most popular subreddits stack up against each other when it comes to appearing on front page posts.
 		</p><br />
@@ -186,9 +206,11 @@
 			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> As you can see by toggling through the bubble chart options (above), there are certainly subreddits which hit the front page more frequently than others. And of the subreddits that make it to the front page, there are definitely ones that engage the community more (shown by number of comments). When it comes down to average rank and score, subreddits which make the front page tend to have a relatively balanced number of upvotes and ranking among all the posts on the front page.
 		</p>
 
-		<hr /><h2>What kinds of posts are reddit users most interested in?</h2>
+
+
+		<hr /><a name="domainV"></a><h2>What kinds of posts are reddit users most interested in?</h2>
 		<p>
-			Reddit allows users to post content from many different sources. Video sites, like Youtube, and image sharing sites, like Imgur, are especially popular. Users may also post their own thoughts as text (called a 'selfpost'). Scroll over the visualization below to see how popular certain types of posts are (the bigger the circle, the more popular its content is).
+			Reddit allows users to post content from many different sources. Video sites, like Youtube, and image sharing sites, like Imgur, are especially popular. Users may also post their own thoughts as text (called a 'selfpost'). Click on the visualization below to see how popular certain types of posts are (the bigger the circle, the more popular its content is).
 		</p>
 
 		<div class="btn-group" role="group" aria-label="..." style="margin-right: 50px; float: right; position: relative; top: 25px;">
@@ -210,7 +232,9 @@
 			<span class="glyphicon glyphicon-eye-open" style="font-size: 18pt;"></span> It is clear that images, webpages and selfposts make it to the front page more than videos, but in terms of number of comments, images lag behind all the others. When we dig down into each type of post we see more polarizing splits in which sources these images, videos, wepages and selfposts come from.
 		</p>
 
-		<hr /><h2>Does a post's title length make a difference?</h2>
+
+
+		<hr /><a name="titleV"></a><h2>Does a post's title length make a difference?</h2>
 		<p>
 			Reddit users are free to choose any title they want to represent their post. Post titles range from short one word adjectives, to longer, multi-sentence descriptions. But how exactly does the length of a title effect how well it does in terms of popularity?
 		</p><br />

@@ -51,7 +51,7 @@ $(document).ready(function(){
 		      .attr("width", x.rangeBand())
 		      .attr("y", function(d) { return y(d.avgUpvotes); })
 		      .attr("height", function(d) { return height - y(d.avgUpvotes); })
-		      .attr("title", function(d) { return "Post rank: " + d.rank + ", \n avgUpvotes: " + d.avgUpvotes; });;
+		      .attr("title", function(d) { return "Post rank: " + d.rank + ", \n avgUpvotes: " + d.avgUpvotes; });
 
 		//Listener for the toggle button click
 		$(".rtbtn").click(function(){
